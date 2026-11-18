@@ -1,0 +1,87 @@
+name: Build & Release Yapcord
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["badges.json", "README.md"]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Point mod + installer at this repo
+        run: |
+          sed -i "s#YOUR_GITHUB_NAME/yapcord#${GITHUB_REPOSITORY}#" src/config.js
+          SHORT="${GITHUB_SHA::7}"
+          VER=$(node -p "require('./installer/package.json').version")
+          echo "{\"version\":\"$VER\",\"sha\":\"$SHORT\",\"repo\":\"$GITHUB_REPOSITORY\"}" > installer/buildinfo.json
+          mkdir -p dist
+          echo "{\"sha\":\"$SHORT\",\"installer\":\"$VER\",\"repo\":\"$GITHUB_REPOSITORY\"}" > dist/version.json
+
+      - name: Build mod bundle
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+
+      - name: Build installer exe
+        working-directory: installer
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: |
+          npm install --no-audit --no-fund
+          npm run dist
+
+      - name: Check the exe exists
+        run: |
+          ls -la installer/release
+          test -f installer/release/YapcordInstaller.exe
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: YapcordInstaller
+          path: installer/release/YapcordInstaller.exe
+
+      - name: Publish versioned release (tags)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            installer/release/YapcordInstaller.exe
+            dist/yapcord.js
+            dist/version.json
+          generate_release_notes: true
+
+      - name: Move "latest" tag (main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git tag -f latest
+          git push -f origin latest
+
+      - name: Publish "latest" release (main)
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Yapcord (latest build)
+          prerelease: true
+          files: |
+            installer/release/YapcordInstaller.exe
+            dist/yapcord.js
+            dist/version.json
