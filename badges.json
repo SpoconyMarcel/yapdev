@@ -1,0 +1,16 @@
+{
+  "_comment": "Only people running Yapdev see these. Badges come from the built-in Yapdev set (see src/badgeIcons.js): boss, founder, dev, helper, earlybird, tester, bughunter, translator, themer, supporter, og, nightowl, yapper, cat. They are custom Yapdev badges, NOT official Yapper badges. \"plus\": true shows the cosmetic Fake Plus label (unlocks nothing). To add a custom badge, add it under \"badges\" with label, icon (one of the built-in icon names) and color.",
+  "badges": {},
+  "users": {
+    "REPLACE_WITH_YAPPER_USER_ID": {
+      "badges": [
+        "boss",
+        "founder",
+        "earlybird",
+        "og"
+      ],
+      "tag": "Boss",
+      "plus": true
+    }
+  }
+}

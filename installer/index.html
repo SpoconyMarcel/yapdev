@@ -1,0 +1,212 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Yapdev Installer</title>
+<style>
+:root{--bg:#090911;--card:#12121f;--line:#25253d;--txt:#eef0fa;--mut:#8d90aa;--a:#8b5cf6;--b:#22d3ee;--c:#d946ef;--ok:#34d399;--warn:#fbbf24;--bad:#f87171}
+*{box-sizing:border-box;font-family:"Segoe UI Variable","Segoe UI",system-ui,sans-serif}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--txt);overflow:hidden;position:relative}
+.glow{position:absolute;border-radius:50%;filter:blur(100px);opacity:.42;pointer-events:none;animation:fl 14s ease-in-out infinite alternate}
+.g1{width:460px;height:460px;background:#6d28d9;left:-160px;bottom:-170px}.g2{width:400px;height:400px;background:#0891b2;right:-140px;top:170px;animation-delay:-6s}.g3{width:260px;height:260px;background:#c026d3;right:120px;bottom:-130px;animation-delay:-3s;opacity:.3}
+@keyframes fl{to{transform:translate(46px,-34px) scale(1.14)}}
+.wrap{position:relative;z-index:1}
+.hero{position:relative;height:190px;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent 100%);mask-image:linear-gradient(180deg,#000 40%,transparent 100%)}
+.hero img.bn{position:absolute;inset:-6% -2%;width:104%;height:112%;object-fit:cover;filter:brightness(1.35) saturate(1.25);animation:kb 26s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1) translateX(0)}to{transform:scale(1.1) translateX(-2.5%)}}
+.head{position:relative;z-index:2;margin:-70px 36px 16px;display:flex;align-items:flex-end;gap:18px}
+.logo{position:relative;width:104px;height:104px;flex:none;animation:in .6s both}
+.logo::before{content:"";position:absolute;inset:-10px;border-radius:34px;background:conic-gradient(from 0deg,var(--a),var(--b),var(--c),var(--a));filter:blur(18px);opacity:.55;animation:spin 8s linear infinite}
+.logo img{position:relative;width:100%;height:100%;border-radius:28px;display:block;box-shadow:0 14px 40px #0009}
+@keyframes spin{to{transform:rotate(360deg)}}
+h1{margin:0;font-size:40px;font-weight:700;letter-spacing:-1.4px;background:linear-gradient(90deg,#c4b5fd,#67e8f9 55%,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent;animation:in .6s .08s both}
+.sub{color:var(--mut);font-size:13px;margin-top:2px;animation:in .6s .14s both}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.bar{position:absolute;top:0;left:0;right:0;height:46px;display:flex;align-items:center;gap:8px;padding:0 10px 0 16px;z-index:20;-webkit-app-region:drag}
+.bar>*{-webkit-app-region:no-drag}
+.user{margin-right:auto;display:flex;align-items:center;gap:9px;background:#0b0b14a6;backdrop-filter:blur(10px);border:1px solid #ffffff1f;border-radius:999px;padding:4px 14px 4px 4px;font-size:13px}
+.av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--c));display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff}
+.wb{width:34px;height:28px;border:0;border-radius:9px;background:#0b0b14a6;color:#d7d9ec;font-size:16px;cursor:pointer;backdrop-filter:blur(10px);transition:.15s}
+.wb:hover{background:#ffffff26}.wb.x:hover{background:#ef4444;color:#fff}
+.bar .pill{background:#0b0b14a6;backdrop-filter:blur(10px)}
+.content{padding:0 36px 18px}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.chip{background:#12121fb8;backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;padding:10px 14px;animation:in .5s both}
+.chip:nth-child(2){animation-delay:.06s}.chip:nth-child(3){animation-delay:.12s}
+.chip small{display:block;color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.7px}
+.chip b{font-size:14px;font-weight:600}.chip .out{color:var(--warn);font-size:11px;margin-left:6px}
+.path{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--mut);font-size:12px;margin-bottom:12px}
+.path b{color:var(--txt);font-weight:500}
+.pill{background:#ffffff0d;border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:6px 13px;font-size:12px;cursor:pointer;transition:.15s}
+.pill:hover{background:#ffffff1c}
+.notice{display:flex;gap:10px;align-items:center;background:#fbbf2410;border:1px solid #fbbf2438;border-radius:16px;padding:10px 14px;font-size:12px;line-height:1.45;color:#f3e3b0;margin-bottom:14px}
+.notice a{color:var(--warn);font-weight:600;cursor:pointer;text-decoration:underline}
+h2{font-size:12px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin:0 0 8px}
+#list{max-height:104px;overflow:auto;padding-right:4px}
+.opt{display:flex;align-items:center;gap:12px;background:#12121fb8;border:1px solid var(--line);border-radius:16px;padding:11px 14px;margin-bottom:8px;cursor:pointer;transition:.18s}
+.opt:hover{border-color:#44446a;transform:translateY(-1px)}
+.opt input{display:none}
+.opt .dot{width:18px;height:18px;border-radius:50%;border:2px solid #44446a;flex:none;transition:.18s}
+.opt:has(input:checked){border-color:var(--a);background:linear-gradient(135deg,#8b5cf622,#22d3ee12)}
+.opt:has(input:checked) .dot{border-color:var(--a);background:radial-gradient(var(--a) 0 45%,transparent 50%)}
+.opt .t{flex:1;min-width:0}.opt .t b{display:block;font-size:14px;font-weight:600}
+.opt .t span{display:block;color:var(--mut);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tag{font-size:11px;padding:3px 10px;border-radius:999px;font-weight:600;flex:none}
+.tag.ok{background:#34d3991f;color:var(--ok)}.tag.warn{background:#fbbf241f;color:var(--warn)}.tag.no{background:#ffffff10;color:var(--mut)}
+#custom{display:none;width:100%;background:#12121fb8;border:1px solid var(--line);border-radius:14px;color:var(--txt);padding:12px 14px;font-size:13px;margin:0 0 10px}
+#custom.show{display:block}#custom:focus{outline:none;border-color:var(--a)}
+.btns{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-top:6px}
+button.act{position:relative;overflow:hidden;border:0;border-radius:16px;padding:16px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;transition:.18s}
+button.act:hover:not(:disabled){transform:translateY(-2px)}
+button.act:disabled{opacity:.35;cursor:not-allowed}
+button.p{background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 12px 32px #8b5cf655}
+button.p::after{content:"";position:absolute;top:0;left:-70%;width:50%;height:100%;background:linear-gradient(100deg,transparent,#ffffff40,transparent);transform:skewX(-20deg);animation:sh 3.4s ease-in-out infinite}
+@keyframes sh{0%,55%{left:-70%}100%{left:130%}}
+.s{background:#ffffff14;border:1px solid var(--line)!important}
+.d{background:#f871711f;color:var(--bad);border:1px solid #f8717140!important}
+#steps{display:none;align-items:center;gap:6px;margin-top:14px;flex-wrap:wrap}
+#steps.show{display:flex}
+.st{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mut)}
+.st .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;background:#25253d;color:var(--mut)}
+.st.now{color:var(--txt)}.st.now .n{background:linear-gradient(135deg,var(--a),var(--b));color:#fff;animation:pu 1.2s ease-in-out infinite}
+.st.done{color:var(--ok)}.st.done .n{background:#34d39922;color:var(--ok)}
+@keyframes pu{50%{box-shadow:0 0 0 6px #8b5cf633}}
+.ln{flex:1;min-width:14px;height:2px;background:#25253d;border-radius:2px}
+#msg{margin-top:12px;min-height:22px;font-size:14px}
+#msg.ok{animation:pp .45s cubic-bezier(.2,.9,.3,1.4)}@keyframes pp{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.cf{position:fixed;top:64%;width:8px;height:13px;border-radius:2px;z-index:9;pointer-events:none;animation:cf 1.6s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes cf{0%{transform:translate(0,0)}35%{transform:translate(calc(var(--x)*.7),var(--y))}100%{transform:translate(var(--x),380px) rotate(var(--r));opacity:0}}
+.ok{color:var(--ok)}.err{color:var(--bad)}
+</style></head><body>
+<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+<div class="bar"><div class="user"><span class="av" id="av"></span><span id="un"></span></div>
+  <button class="pill" id="lng"></button><button class="wb" id="wmin" title="Minimize">–</button><button class="wb x" id="wclose" title="Close">×</button></div>
+<div class="wrap">
+  <div class="hero"><img class="bn" src="assets/banner.jpg" onerror="this.onerror=null;this.src='assets/banner.svg'"></div>
+  <div class="head">
+    <div class="logo"><img src="assets/logo.png" onerror="this.onerror=null;this.src='assets/logo.svg'"></div>
+    <div><h1>Yapdev</h1><div class="sub" id="tag"></div></div>
+  </div>
+  <div class="content">
+    <div class="chips">
+      <div class="chip"><small id="l_inst"></small><b id="iv"></b><span class="out" id="out"></span></div>
+      <div class="chip"><small id="l_loc"></small><b id="lv"></b></div>
+      <div class="chip"><small id="l_new"></small><b id="nv"></b></div>
+    </div>
+    <div class="path"><span><span id="l_dl"></span> <b id="dist"></b></span><button class="pill" id="open"></button></div>
+    <div class="notice"><span>🛡️</span><span id="warn"></span></div>
+    <h2 id="l_sel"></h2>
+    <div id="list"></div>
+    <label class="opt"><input type="radio" name="i" value="custom"><span class="dot"></span><span class="t"><b id="l_cust"></b><span id="l_cust2"></span></span></label>
+    <input id="custom">
+    <div class="btns"><button class="act p" id="install"></button><button class="act s" id="repair"></button><button class="act d" id="uninstall"></button></div>
+    <div id="steps"></div>
+    <div id="msg"></div>
+  </div>
+</div>
+
+<script>
+const L = {
+  en: { hi: (n) => `Hi, ${n}`, lng: "PL", tag: "Modern mod for the Yapper desktop app", inst: "Installer", loc: "Installed mod", nw: "Latest", dl: "Files are stored in", open: "Open folder",
+    warn: 'GitHub (<a id="gh"></a>) is the only official place to get Yapdev. Any other site claiming to be us is malicious.',
+    sel: "Choose an install to patch", cust: "Custom location", cust2: "Pick the Yapper folder yourself", ph: "Paste the folder path or double-click to browse",
+    install: "Install", repair: "Repair", uninstall: "Uninstall", patched: "Patched", fix: "Needs repair", clean: "Not installed",
+    S: { closing: "Closing Yapper", downloading: "Downloading mod", patching: "Patching", starting: "Starting Yapper" },
+    done: { install: "Installed!", repair: "Repaired!", uninstall: "Uninstalled!" }, rs: " Yapper has been restarted.",
+    nf: "Yapper was not found automatically. Use “Custom location”.", nores: "No Yapper “resources” folder found there.", found: "Found Yapper at", outd: "OUTDATED" },
+  pl: { hi: (n) => `Cześć, ${n}`, lng: "EN", tag: "Nowoczesny mod do aplikacji Yapper", inst: "Instalator", loc: "Zainstalowany mod", nw: "Najnowsza", dl: "Pliki są w", open: "Otwórz folder",
+    warn: 'GitHub (<a id="gh"></a>) to jedyne oficjalne miejsce, gdzie można pobrać Yapdev. Każda inna strona podająca się za nas jest złośliwa.',
+    sel: "Wybierz instalację do spatchowania", cust: "Własna lokalizacja", cust2: "Wskaż folder Yapper samodzielnie", ph: "Wklej ścieżkę folderu lub kliknij dwukrotnie, aby wybrać",
+    install: "Zainstaluj", repair: "Napraw", uninstall: "Odinstaluj", patched: "Zainstalowany", fix: "Wymaga naprawy", clean: "Niezainstalowany",
+    S: { closing: "Zamykam Yapper", downloading: "Pobieram mod", patching: "Instaluję", starting: "Uruchamiam Yapper" },
+    done: { install: "Zainstalowano!", repair: "Naprawiono!", uninstall: "Odinstalowano!" }, rs: " Yapper został uruchomiony ponownie.",
+    nf: "Nie znaleziono Yapper automatycznie. Użyj „Własnej lokalizacji”.", nores: "Nie znaleziono tam folderu „resources”.", found: "Znaleziono Yapper w", outd: "NIEAKTUALNY" },
+};
+let lang = localStorage.getItem("lang") || ((navigator.language || "en").toLowerCase().startsWith("pl") ? "pl" : "en");
+let T = L[lang], uname = "";
+const $ = (id) => document.getElementById(id);
+let installs = [], sel = null;
+
+function applyLang() {
+  T = L[lang];
+  $("tag").textContent = (uname ? T.hi(uname) + " · " : "") + T.tag; $("l_inst").textContent = T.inst; $("l_loc").textContent = T.loc; $("l_new").textContent = T.nw;
+  $("l_dl").textContent = T.dl; $("open").textContent = T.open; $("warn").innerHTML = T.warn; $("l_sel").textContent = T.sel;
+  $("l_cust").textContent = T.cust; $("l_cust2").textContent = T.cust2; $("custom").placeholder = T.ph;
+  $("install").textContent = T.install; $("repair").textContent = T.repair; $("uninstall").textContent = T.uninstall;
+  $("lng").textContent = T.lng;
+  if (typeof refreshInfo === "function") refreshInfo();
+  renderList();
+}
+$("lng").onclick = () => { lang = lang === "pl" ? "en" : "pl"; localStorage.setItem("lang", lang); applyLang(); };
+$("wmin").onclick = () => window.api.win("min");
+$("wclose").onclick = () => window.api.win("close");
+
+const tag = (s) => s.installed ? `<span class="tag ok">${T.patched}</span>` : s.needsRepair ? `<span class="tag warn">${T.fix}</span>` : `<span class="tag no">${T.clean}</span>`;
+function renderList() {
+  $("list").innerHTML = installs.map((x, i) =>
+    `<label class="opt"><input type="radio" name="i" value="${i}" ${sel === x ? "checked" : ""}><span class="dot"></span>
+     <span class="t"><b>${x.label}</b><span>${x.dir}</span></span>${tag(x.status)}</label>`).join("");
+  update();
+}
+function update(busy) {
+  const off = busy || !(sel && sel.status);
+  $("install").disabled = off; $("repair").disabled = off; $("uninstall").disabled = off;
+}
+document.addEventListener("change", (e) => {
+  if (e.target.name !== "i") return;
+  const custom = e.target.value === "custom";
+  $("custom").classList.toggle("show", custom);
+  if (custom) { sel = null; update(); $("custom").focus(); } else { sel = installs[+e.target.value]; update(); }
+});
+$("custom").addEventListener("change", async () => {
+  const r = await window.api.resolve($("custom").value.trim());
+  sel = r; update();
+  $("msg").className = r ? "" : "err";
+  $("msg").textContent = r ? `${T.found} ${r.dir}` : T.nores;
+});
+$("custom").addEventListener("dblclick", async () => { const p = await window.api.browse(); if (p) { $("custom").value = p; $("custom").dispatchEvent(new Event("change")); } });
+
+function renderSteps(plan, i) {
+  $("steps").classList.add("show");
+  $("steps").innerHTML = plan.map((s, k) =>
+    `<div class="st ${k < i ? "done" : k === i ? "now" : ""}"><span class="n">${k < i ? "✓" : k + 1}</span><span>${T.S[s]}</span></div>`).join('<i class="ln"></i>');
+}
+window.api.onStep(({ plan, i }) => renderSteps(plan, i));
+
+function confetti() {
+  const cols = ["#8b5cf6", "#22d3ee", "#d946ef", "#34d399", "#fbbf24"];
+  for (let i = 0; i < 54; i++) {
+    const s = document.createElement("i"); s.className = "cf";
+    s.style.cssText = `left:${46 + Math.random() * 8}%;background:${cols[i % 5]};--x:${(Math.random() - .5) * 600}px;--y:${-140 - Math.random() * 260}px;--r:${Math.random() * 720}deg;animation-delay:${Math.random() * .15}s`;
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2000);
+  }
+}
+async function run(a) {
+  if (!sel) return;
+  update(true);
+  $("msg").className = ""; $("msg").textContent = "";
+  const r = await window.api.run(a, sel.res);
+  if (r.ok) { if (a !== "uninstall") confetti(); sel.status = r.status; $("msg").className = "ok"; $("msg").textContent = "✓ " + T.done[a] + (r.restarted ? T.rs : ""); refreshInfo(); }
+  else { $("steps").classList.remove("show"); $("msg").className = "err"; $("msg").textContent = r.error; }
+  renderList();
+}
+$("install").onclick = () => run("install");
+$("repair").onclick = () => run("repair");
+$("uninstall").onclick = () => run("uninstall");
+$("open").onclick = () => window.api.openDir();
+
+async function refreshInfo() {
+  const i = await window.api.info();
+  $("dist").textContent = i.distDir; $("iv").textContent = i.installer;
+  $("out").textContent = i.outdated ? T.outd : "";
+  $("lv").textContent = i.local; $("nv").textContent = i.latest;
+  const gh = $("gh"); if (gh) { gh.textContent = i.repo; gh.onclick = () => window.api.openUrl("https://github.com/" + i.repo); }
+}
+(async () => {
+  uname = await window.api.whoami();
+  $("un").textContent = uname || "Yapper"; $("av").textContent = (uname || "Y")[0].toUpperCase();
+  applyLang();
+  installs = await window.api.installs();
+  sel = installs[0] || null;
+  renderList();
+  if (!installs.length) { $("msg").className = "err"; $("msg").textContent = T.nf; }
+})();
+</script></body></html>
